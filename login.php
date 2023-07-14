@@ -28,16 +28,23 @@ session_start();
             Giriş Yap
         </div>
         <div class="card-body">
-            <div class="alert alert-danger"><?= session(session:'') ?> </div>
-            <!-- Artık login sayfasında session'ı kullanabiliyorum. -->
+            <!--
+                php kodlarını ekleyerek hata mesajını burada yazdırdık.
+             -->
+            <?php if(session(session:'error')): ?>
+            <div class="alert alert-danger"><?= session (session:'error'); ?> </div>
+             <!-- Artık login sayfasında session'ı kullanabiliyorum. -->
+            <?php endif; ?>
+           
             <form action="islem.php?islem=giris" method="post">
                 <!-- 
                 islem.php ye bu post'u gönderdiğimde, islem.php ve get değeri olarak da işlemin giriş olduğunu göndermiş oluyorum ve buna göre işlemlerimi islem.php de yaptıracağım.
             -->
                 <label for="username" class="text-success">Kullanici Adiniz</label>
-                <input type="text" name="username" class="form-control">
+                <!-- value değeri ile kullanıcı adını girdiğimizde şifre hatalıysa kullanıcı adı textbox'ındaki ifade silinmez. -->
+                <input type="text" name="username" value=" <?= session(session:'username') ?>" class="form-control">
                 <label for="password" class="text-success">Şifreniz</label>
-                <input type="text" name="password" class="form-control mb-4">
+                <input type="text" name="password" value="<?= session(session:'password') ?>" class="form-control mb-4">
                 <button class="btn btn-success mb-4 w-100">Giriş Yap</button>
             </form>
         </div>
@@ -49,3 +56,11 @@ session_start();
 </div>
 </body>
 </html>
+<?php
+//sayfa yenilendiğinde hata mesajının silinmesi lazım.
+
+$_SESSION['error'] = null;
+$_SESSION['username'] = null;
+$_SESSION['password'] = null;
+
+?>
