@@ -26,10 +26,10 @@ $hakkimda = file_get_contents('db/' . session('kullanici_adi') . '.txt');
         form{position: relative;}
     </style>
 </head>
-<body class="bg-dark">
+<body class="<?= cook(cookie: 'color') ? cook(cookie:'color') : 'bg-dark'; ?>">
 <div class="d-flex align-items-center justify-content-center p-4"><img height="" src="kodl.png" alt=""></div>
 <div  class="container d-flex align-items-center justify-content-center">
-    <div class="card bg-dark" style="width: 18rem;">
+    <div class="card <?= cook(cookie: 'color') ? cook(cookie:'color') : 'bg-dark'; ?>" style="width: 18rem;">
         <div class="card-header bg-primary">
             Profilim
         </div>
@@ -39,23 +39,25 @@ $hakkimda = file_get_contents('db/' . session('kullanici_adi') . '.txt');
 
                <?php
                //metin gönderim işleminin gerçekleşip gerçekleşmediğine dair alert gönderir.
-               if(get(get:'islem') ==true){
+               if(get(get:'islem') == 'true'){
                 echo "<div class='alert alert-success'> İşlem başarılı. </div>";
                }
-               else echo "<div class='alert alert-success'> İşlem başarısız. </div>";
+               elseif(get(get:'islem') == 'false')  {
+                echo "<div class='alert alert-danger'> İşlem başarısız. </div>";
+            }
 
                ?>
 
             <form action="islem.php?islem=hakkimda" method="post"> <!-- islem.php de islem get değerimdeki hakkimda bölümü çalıştırılacak. -->
-                <textarea class="form-control bg-dark text-white" name="hakkimda" id="" cols="30" rows="10"> <?= htmlspecialchars_decode($hakkimda) ?> </textarea>
+                <textarea class="form-control <?= cook(cookie: 'color') ? cook(cookie:'color') : 'bg-dark'; ?> text-primary" name="hakkimda" id="" cols="30" rows="10"> <?= htmlspecialchars_decode($hakkimda) ?> </textarea>
                 <button class="btn btn-sm btn-primary" type="submit">Kaydet</button>
             </form>
             <a href="islem.php?islem=cikis" class="btn btn-success btn-sm mt-2 w-100">Oturumu Kapat</a><br>
 
         </div>
         <div class="card-footer bg-info d-flex align-items-center justify-content-between">
-            <a href="change-color.php?color=bg-light" class="btn btn-sm btn-light">Light Mod</a>
-            <a href="change-color.php?color=bg-dark" class="btn btn-sm btn-dark">Dark Mod</a>
+            <a href="islem.php?islem=renk&color=bg-light" class="btn btn-sm btn-light">Light Mod</a>
+            <a href="islem.php?islem=renk&color=bg-dark" class="btn btn-sm btn-dark">Dark Mod</a>
         </div>
     </div>
 </div>

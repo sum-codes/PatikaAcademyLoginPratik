@@ -75,4 +75,13 @@ if(get(get:'islem') == 'cikis'){
   header(header: 'Location:login.php');
 }
 
+if(get(get:'islem') == 'renk'){
+
+  setcookie('color', get(get:'color'), time() + (86400 * 360));
+  //?? nedir: http referer varsa solu yaz yoksa sağ tarafı yaz.
+
+  header(header:'Location:' .$_SERVER['HTTP_REFERER'] ?? 'index.php');
+  
+}
+
 ?>
