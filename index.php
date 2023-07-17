@@ -5,6 +5,10 @@ session_start();
 if(!isset($_SESSION['login']) || $_SESSION['login'] == false){
     header(header: 'Location:login.php');
 }
+//Giriş yaptığımızda txt dosyasondaki bilgileri çekeriz.
+
+$hakkimda = file_get_contents('db/' . session('kullanici_adi') . '.txt');
+
 ?>
 
 
@@ -29,14 +33,24 @@ if(!isset($_SESSION['login']) || $_SESSION['login'] == false){
         <div class="card-header bg-primary">
             Profilim
         </div>
-        <div class="card-body">
-            <h5 class="card-title text-warning">Şahin ERSEVER</h5>
-            <h6 class="card-subtitle mb-2 text-muted">sahin@stebilisim.com</h6>
-            <form action="">
-                <textarea class="form-control bg-dark text-white" name="" id="" cols="30" rows="10">Merhaba, ben Şahin ERSEVER. 10 Ocak 1993 yılında dünyaya geldim, İstanbul Beylikdüzünde yaşıyorum.</textarea>
+        <div class="card-body"> <!-- kullanıcı session bilgilerini yazdık. -->
+            <h5 class="card-title text-warning"><?= session(session: 'kullanici_adi') ?></h5>
+            <h6 class="card-subtitle mb-2 text-muted"><?= session(session: 'eposta') ?></h6>
+
+               <?php
+               //metin gönderim işleminin gerçekleşip gerçekleşmediğine dair alert gönderir.
+               if(get(get:'islem') ==true){
+                echo "<div class='alert alert-success'> İşlem başarılı. </div>";
+               }
+               else echo "<div class='alert alert-success'> İşlem başarısız. </div>";
+
+               ?>
+
+            <form action="islem.php?islem=hakkimda" method="post"> <!-- islem.php de islem get değerimdeki hakkimda bölümü çalıştırılacak. -->
+                <textarea class="form-control bg-dark text-white" name="hakkimda" id="" cols="30" rows="10"> <?= htmlspecialchars_decode($hakkimda) ?> </textarea>
                 <button class="btn btn-sm btn-primary" type="submit">Kaydet</button>
             </form>
-            <a href="#" class="btn btn-success btn-sm mt-2 w-100">Oturumu Kapat</a><br>
+            <a href="islem.php?islem=cikis" class="btn btn-success btn-sm mt-2 w-100">Oturumu Kapat</a><br>
 
         </div>
         <div class="card-footer bg-info d-flex align-items-center justify-content-between">

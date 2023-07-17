@@ -9,7 +9,7 @@ $user = [
 ],
 'fatmaersever' =>[
     'eposta' => 'fatma@stebilsim.com',
-    'password' => '654321',
+    'password' => '12345',
 ],
 ];
 
@@ -30,13 +30,14 @@ if(get(get:'islem') == 'giris'){
         exit();
     }
     else{
-        //kullanıcı bilgisi doğrulama.
+        //kullanıcı bilgisi doğrulama ve giriş işlemi.
       if(array_key_exists(post(post:'username'), $user )){
         if($user[post(post:'username')]['password'] == post(post: 'password')){
 
           $_SESSION['login']=true;
           $_SESSION['kullanici_adi'] = post(post: 'username');
           $_SESSION['eposta'] = $user[post(post:'username')]['eposta'];
+          header(header:'Location:index.php');
 
         }
         else {
@@ -53,6 +54,25 @@ if(get(get:'islem') == 'giris'){
     }
 }
 
+if(get(get:'islem')=='hakkimda'){
 
+  $hakkimda=post(post:'hakkimda');
+
+  $islem = file_put_contents('db/' . session('kullanici_adi') . '.txt', htmlspecialchars($hakkimda));
+
+  if($islem){
+    //metin gönderim işleminin true, false durumunu linkte gösterir.
+  header(header:'Location:index.php?islem=true');
+  }
+  else header(header:'Location:index.php?islem=false');
+
+}
+
+if(get(get:'islem') == 'cikis'){
+  session_destroy();
+  session_start();
+  $_SESSION['error'] = 'Oturum sonlandırıldı.';
+  header(header: 'Location:login.php');
+}
 
 ?>
